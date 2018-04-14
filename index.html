@@ -299,7 +299,7 @@
 				<i class="fa fa-close" aria-hidden="true"></i>
 			</button>
 
-			<form class="contact100-form validate-form">
+			<form class="contact100-form validate-form" id="contact_body" method="post" action="api/emailController.php?act=contact" enctype='multipart/form-data'>
 				<span class="contact100-form-title">
 					Contact Us
 				</span>
@@ -327,7 +327,7 @@
         <svg viewBox="0 0 180 60">
           <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
         </svg>
-        <span style="transform: scale(1);">Submit</span>
+        <span style="transform: scale(1);" id="submit">Submit</span>
       </a>
 				</div>
 			</form>
@@ -387,4 +387,63 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 </body>
+<script type="text/javascript">
+$( "#submit" ).click(function() {
+  $( "#contact_body" ).submit();
+});
+$("#contact_body").submit(function(e){
+   e.preventDefault(); //prevent default action 
+    proceed = true;
+        var post_url = $(this).attr("action"); //get form action url
+        var request_method = $(this).attr("method"); //get form GET/POST method
+        var form_data = new FormData(this); //Creates new FormData object
+        $.ajax({ //ajax form submit
+            url : post_url,
+            type: request_method,
+            data : form_data,
+            dataType : "json",
+            contentType: false,
+            cache: false,
+            processData:false
+        }).done(function(res){
+           //fetch server "json" messages when done
+            if(res.status == 1){
+               
+                alert_msg('Thanks for applying');
+            }
+            else{
+                alert_msg('Something went wrong');
+            }
+        });
+  });
+
+//  function contact_us()
+//  { 
+
+//   $.ajax({
+//     url:'api/emailController.php?act=contact',
+//     data:data,
+//     method:'POST',
+//     dataType:text,
+//     success:function(result)
+//     {
+
+
+
+//     },
+//     failure:function(result)
+//     {
+
+
+
+
+//     }
+
+
+
+
+
+//   });
+// }
+</script>
 </html>
